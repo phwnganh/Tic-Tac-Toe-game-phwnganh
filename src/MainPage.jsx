@@ -1,12 +1,18 @@
 
-import {useState} from "react";
 import NewGameMenu from "./components/NewGameMenu.jsx";
+import {Routes, Route} from "react-router-dom";
+import MainLayout from "./layouts/MainLayout.jsx";
+import GameSolo from "./components/GameSolo.jsx";
+import GameMultiplayer from "./components/GameMultiplayer.jsx";
 const MainPage = () => {
-    const [player, setPlayer] = useState("X")
     return (
-        <div className={"bg-slate-900"}>
-            <NewGameMenu player={player} setPlayer={setPlayer} />
-        </div>
+        <Routes>
+            <Route path="/" element={<MainLayout />}>
+                <Route index element={<NewGameMenu />} />
+                <Route path="new-game/solo" element={<GameSolo />} />
+                <Route path="new-game/multiplayer" element={<GameMultiplayer />} />
+            </Route>
+        </Routes>
     );
 };
 
