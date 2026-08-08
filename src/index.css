@@ -1,49 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --color-neutral-0: #FFFFFF;
-  --color-neutral-950: #000000;
+  font-family: "Outfit", sans-serif;
 
-  --color-slate-100: #DBE8ED;
-  --color-slate-300: #A8BFC9;
-  --color-slate-800: #1F3641;
-  --color-slate-850: #21313B;
-  --color-slate-900: #1A2A33;
+  @theme {
+    --color-neutral-0: #FFFFFF;
+    --color-neutral-950: #000000;
 
-  --color-amber-300: #FFC860;
-  --color-amber-400: #F2B137;
+    --color-slate-100: #DBE8ED;
+    --color-slate-300: #A8BFC9;
+    --color-slate-800: #1F3641;
+    --color-slate-850: #21313B;
+    --color-slate-900: #1A2A33;
 
-  --color-teal-300: #65E9E4;
-  --color-teal-400: #31C3BD;
+    --color-amber-300: #FFC860;
+    --color-amber-400: #F2B137;
 
-  --text-preset-1: 40px;
-  --leading-preset-1: 125%;
-  --tracking-preset-1: 3px;
-  --font-weight-preset-1: 700;
+    --color-teal-300: #65E9E4;
+    --color-teal-400: #31C3BD;
 
-  --text-preset-2: 24px;
-  --leading-preset-2: 125%;
-  --tracking-preset-2: 2px;
-  --font-weight-preset-2: 700;
+    --text-preset-1: 40px;
+    --leading-preset-1: 125%;
+    --tracking-preset-1: 3px;
+    --font-weight-preset-1: 700;
 
-  --text-preset-3: 20px;
-  --leading-preset-3: 125%;
-  --tracking-preset-3: 1px;
-  --font-weight-preset-3: 700;
+    --text-preset-2: 24px;
+    --leading-preset-2: 125%;
+    --tracking-preset-2: 2px;
+    --font-weight-preset-2: 700;
 
-  --text-preset-4: 16px;
-  --leading-preset-4: 125%;
-  --tracking-preset-4: 1px;
-  --font-weight-preset-4: 700;
+    --text-preset-3: 20px;
+    --leading-preset-3: 125%;
+    --tracking-preset-3: 1px;
+    --font-weight-preset-3: 700;
 
-  --text-preset-5: 14px;
-  --leading-preset-5: 130%;
-  --tracking-preset-5: 1px;
-  --font-weight-preset-5-bold: 700;
-  --font-weight-preset-5-medium: 500;
+    --text-preset-4: 16px;
+    --leading-preset-4: 125%;
+    --tracking-preset-4: 1px;
+    --font-weight-preset-4: 700;
 
-  --text-preset-6: 12px;
-  --leading-preset-6: 125%;
-  --tracking-preset-6: 1px;
-  --font-weight-preset-6: 500;
+    --text-preset-5: 14px;
+    --leading-preset-5: 130%;
+    --tracking-preset-5: 1px;
+    --font-weight-preset-5-bold: 700;
+    --font-weight-preset-5-medium: 500;
+
+    --text-preset-6: 12px;
+    --leading-preset-6: 125%;
+    --tracking-preset-6: 1px;
+    --font-weight-preset-6: 500;
+  }
+
 }
