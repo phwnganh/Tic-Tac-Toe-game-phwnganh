@@ -1,8 +1,12 @@
 import XIcon from "../../../public/icon-x.svg";
 import OIcon from "../../../public/icon-o.svg";
 import GreyXICon from "../../../public/grey-icon-x.svg";
+import GreyOIcon from "../../../public/grey-icon-o.svg";
 import ReturnICon from "../../../public/icon-restart.svg";
-const GameStart = () => {
+import {Fragment} from "react";
+const GameStart = ({currentPlayer, board, onClickBoard}) => {
+    const isCurrentTurn = currentPlayer === "O"
+
     return (
         <div className={"flex flex-col gap-5 max-w-115 w-full"}>
             <div className={"flex items-center justify-between"}>
@@ -26,7 +30,7 @@ const GameStart = () => {
                     }
                 >
                     <div className={"flex justify-center items-center w-5 h-5 shrink-0"}>
-                        <img src={GreyXICon} alt="GreyXICon" />
+                        <img src={isCurrentTurn ? GreyOIcon : GreyXICon} alt={isCurrentTurn ? "GreyOIcon" : "GreyXICon"} />
                     </div>
                     <span
                         className={
@@ -46,7 +50,15 @@ const GameStart = () => {
 
             <div className={"grid grid-cols-3 gap-5"}>
                 {Array.from({ length: 9 }, (_, index) => (
-                    <button type={"button"} key={index} className={"w-35 h-35 rounded-2xl bg-slate-800"} />
+                    <Fragment key={index}>
+                        <div className={"relative"}>
+                            <button type={"button"} onClick={() => onClickBoard(index)} className={"w-35 h-35 rounded-2xl bg-slate-800 flex items-center justify-center"}>
+                                {board[index] && (
+                                    <img src={board[index] === "O" ? OIcon : XIcon} alt={board[index]} className={"w-16 h-16 shrink-0"} />
+                                )}
+                            </button>
+                        </div>
+                    </Fragment>
                 ))}
             </div>
 

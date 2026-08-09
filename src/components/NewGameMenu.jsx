@@ -4,7 +4,7 @@ import SwitchIcon from "./shared/SwitchIcon.jsx";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const NewGameMenu = () => {
-  const [player, setPlayer] = useState("X");
+  const [player, setPlayer] = useState("O");
   const navigate = useNavigate();
   return (
     <div className={"flex flex-col gap-8 sm:gap-10 max-w-115 w-full"}>
@@ -44,7 +44,7 @@ const NewGameMenu = () => {
       <div className={"flex flex-col gap-4 sm:gap-5"}>
         <button
           type={"button"}
-          onClick={() => navigate(`/new-game/solo`)}
+          onClick={() => navigate(`/new-game/solo`, {state: player})}
           className={
             "uppercase shadow-[0_-8px_0_0_#1012A80] py-4 rounded-2xl bg-amber-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
           }
@@ -53,7 +53,7 @@ const NewGameMenu = () => {
         </button>
         <button
           type={"button"}
-          onClick={() => navigate("/new-game/multiplayer")}
+          onClick={() => navigate("/new-game/multiplayer", {state: player})}
           className={
             "uppercase shadow-[0_-8px_0_0_#1012A80] py-4 rounded-2xl bg-teal-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
           }
