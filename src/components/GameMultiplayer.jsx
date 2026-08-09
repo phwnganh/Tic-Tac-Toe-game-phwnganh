@@ -1,6 +1,7 @@
 import GameStart from "./shared/GameStart.jsx";
 import {useLocation} from "react-router-dom";
 import {useState} from "react";
+import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 
 const GameMultiplayer = () => {
     const {state} = useLocation()
@@ -9,11 +10,22 @@ const GameMultiplayer = () => {
 
     const handleClickBoard = (index) => {
         if(board[index] !== null) return;
-        setBoard(prevBoard => {
-            const newBoard = [...prevBoard];
-            newBoard[index] = currentTurn;
-            return newBoard;
-        })
+        const newBoard = [...board]
+
+        newBoard[index] = currentTurn
+        setBoard(newBoard)
+
+        const winner = checkWinner(newBoard)
+
+        if(winner === currentTurn){
+            console.log(`${currentTurn} WIN`);
+            return;
+        }
+
+        if(checkDrawLines(newBoard)){
+            console.log("DRAW");
+            return;
+        }
         setCurrentTurn(prevPlayer => prevPlayer === "X" ? "O" : "X")
     }
     return (

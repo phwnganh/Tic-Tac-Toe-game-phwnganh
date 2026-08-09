@@ -1,6 +1,7 @@
 import GameStart from "./shared/GameStart.jsx";
 import {useLocation} from "react-router-dom";
 import {useState} from "react";
+import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 
 
 const GameSolo = () => {
@@ -20,6 +21,18 @@ const GameSolo = () => {
         newBoard[index] = player;
         setBoard(newBoard);
 
+        const winner = checkWinner(newBoard)
+
+        if(winner === player){
+            console.log("YOU WIN");
+            return;
+        }
+
+        if(checkDrawLines(newBoard)){
+            console.log("DRAW");
+            return;
+        }
+
         setCurrentTurn(cpu)
         handleAutomaticallyMoved(newBoard)
 
@@ -33,12 +46,25 @@ const GameSolo = () => {
         const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)]
 
         setTimeout(() => {
-            setBoard(prevBoard => {
-                const newBoard = [...prevBoard];
-                newBoard[randomIndex] = cpu;
+            const newBoard = [...currentBoard]
 
-                return newBoard;
-            })
+            newBoard[randomIndex] = cpu;
+
+            const winnerCPU = checkWinner(newBoard)
+
+            if(winnerCPU === cpu){
+                console.log("YOU LOSE");
+                setBoard(newBoard)
+                return;
+            }
+
+            if(checkDrawLines(newBoard)){
+                console.log("DRAW");
+                setBoard(newBoard)
+                return;
+            }
+
+            setBoard(newBoard)
             setCurrentTurn(player);
         }, 500)
     }
