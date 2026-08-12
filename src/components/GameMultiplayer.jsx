@@ -1,12 +1,23 @@
 import GameStart from "./shared/GameStart.jsx";
-import {useLocation} from "react-router-dom";
-import {useState} from "react";
+import {useLocation, useOutletContext} from "react-router-dom";
+import {useCallback, useEffect, useState} from "react";
 import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 
 const GameMultiplayer = () => {
     const {state} = useLocation()
+    const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
     const [currentTurn, setCurrentTurn] = useState(state)
     const [board, setBoard] = useState(Array(9).fill(null))
+
+    const resetGame = useCallback(() => {
+        setBoard(Array(9).fill(null));
+        setCurrentTurn(state);
+    }, [state]);
+
+    useEffect(() => {
+        registerResetHandler(resetGame);
+        return () => registerResetHandler(() => {});
+    }, [registerResetHandler, resetGame]);
 
     const handleClickBoard = (index) => {
         if(board[index] !== null) return;
@@ -30,7 +41,7 @@ const GameMultiplayer = () => {
     }
     return (
         <>
-            <GameStart currentPlayer={state} board={board} onClickBoard={handleClickBoard}/>
+            <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard}/>
         </>
     );
 };

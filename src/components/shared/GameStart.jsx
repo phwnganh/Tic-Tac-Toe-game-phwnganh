@@ -4,7 +4,7 @@ import GreyXICon from "../../../public/grey-icon-x.svg";
 import GreyOIcon from "../../../public/grey-icon-o.svg";
 import ReturnICon from "../../../public/icon-restart.svg";
 import {Fragment} from "react";
-const GameStart = ({currentPlayer, board, onClickBoard}) => {
+const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard}) => {
     const isCurrentTurn = currentPlayer === "O"
 
     return (
@@ -41,7 +41,7 @@ const GameStart = ({currentPlayer, board, onClickBoard}) => {
           </span>
                 </button>
 
-                <button type={"button"} className={"bg-slate-300 p-4 rounded-xl"}>
+                <button type={"button"} onClick={onOpenResetConfirmModal} className={"bg-slate-300 p-4 rounded-xl"}>
                     <div className={"flex items-center justify-center w-5 h-5 shrink-0"}>
                         <img src={ReturnICon} alt="ReturnICon" />
                     </div>
