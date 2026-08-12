@@ -2,12 +2,23 @@ import GameStart from "./shared/GameStart.jsx";
 import {useLocation, useOutletContext} from "react-router-dom";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
+import WinNotificationModal from "./shared/WinNotificationModal.jsx";
+import LoseNotificationModal from "./shared/LoseNotificationModal.jsx";
 
 
 const GameSolo = () => {
     const {state} = useLocation()
     const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
+    const [isOpenWinNotificationModal, setIsOpenWinNotificationModal] = useState(false)
+    const [isOpenLoseNotificationModal, setIsOpenLoseNotificationModal] = useState(false)
 
+    const handleOpenWinNotificationModal = () => {
+        setIsOpenWinNotificationModal(true)
+    }
+
+    const handleOpenLoseNotificationModal = () => {
+        setIsOpenLoseNotificationModal(false)
+    }
     const player = state;
     const cpu = player === "X" ? "O" : "X"
     const [currentTurn, setCurrentTurn] = useState(player)
@@ -40,7 +51,7 @@ const GameSolo = () => {
         const winner = checkWinner(newBoard)
 
         if(winner === player){
-            console.log("YOU WIN");
+            handleOpenWinNotificationModal()
             return;
         }
 
@@ -69,7 +80,7 @@ const GameSolo = () => {
             const winnerCPU = checkWinner(newBoard)
 
             if(winnerCPU === cpu){
-                console.log("YOU LOSE");
+                handleOpenLoseNotificationModal()
                 setBoard(newBoard)
                 timeoutRef.current = null;
                 return;
@@ -90,6 +101,8 @@ const GameSolo = () => {
   return (
     <>
         <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} />
+        {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={currentTurn} isMultiplayer={false}/>}
+        {isOpenLoseNotificationModal && <LoseNotificationModal/>}
     </>
   );
 };
