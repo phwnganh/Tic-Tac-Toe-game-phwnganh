@@ -47,7 +47,7 @@ const GameSolo = () => {
         setWinningPlayer(null)
     }, [player]);
 
-    const handleRestartGame = () => {
+    const handleRestartGame = useCallback(() => {
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
             timeoutRef.current = null;
@@ -61,7 +61,7 @@ const GameSolo = () => {
             ties: 0,
             cpu: 0
         })
-    }
+    }, [player])
 
     const handleNextRound = () => {
         resetGame();

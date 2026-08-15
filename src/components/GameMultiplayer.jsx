@@ -28,7 +28,7 @@ const GameMultiplayer = () => {
         setWinningLine([])
     }, [state]);
 
-    const handleRestartGame = () => {
+    const handleRestartGame = useCallback(() => {
         setBoard(Array(9).fill(null));
         setCurrentTurn(state);
         setGameOver(false)
@@ -38,7 +38,7 @@ const GameMultiplayer = () => {
             ties: 0,
             x: 0
         })
-    }
+    }, [state])
 
     const handleNextRound = () => {
         resetGame()
