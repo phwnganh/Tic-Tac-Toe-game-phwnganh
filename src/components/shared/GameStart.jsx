@@ -2,11 +2,14 @@ import XIcon from "../../../public/icon-x.svg";
 import OIcon from "../../../public/icon-o.svg";
 import GreyXICon from "../../../public/grey-icon-x.svg";
 import GreyOIcon from "../../../public/grey-icon-o.svg";
+import ShadowOIcon from '../../../public/shadow-icon-o.svg'
+import ShadowXIcon from '../../../public/shadow-icon-x.svg'
+import OutlineOIcon from '../../../public/icon-o-outline.svg'
+import OutlineXIcon from '../../../public/icon-x-outline.svg'
 import ReturnICon from "../../../public/icon-restart.svg";
 import {Fragment} from "react";
-const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard}) => {
+const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard, winningLine = [], winningPlayer}) => {
     const isCurrentTurn = currentPlayer === "O"
-
     return (
         <div className={"flex flex-col gap-5 max-w-115 w-full"}>
             <div className={"flex items-center justify-between"}>
@@ -49,17 +52,40 @@ const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard}
             </div>
 
             <div className={"grid grid-cols-3 gap-5"}>
-                {Array.from({ length: 9 }, (_, index) => (
-                    <Fragment key={index}>
-                        <div className={"relative"}>
-                            <button type={"button"} onClick={() => onClickBoard(index)} className={"w-35 h-35 rounded-2xl bg-slate-800 flex items-center justify-center"}>
-                                {board[index] && (
-                                    <img src={board[index] === "O" ? OIcon : XIcon} alt={board[index]} className={"w-16 h-16 shrink-0"} />
-                                )}
-                            </button>
-                        </div>
-                    </Fragment>
-                ))}
+                {Array.from({ length: 9 }, (_, index) => {
+                    const isWinningCell = winningLine.includes(index)
+                        return (
+                            <Fragment key={index}>
+                                <div className={"relative group"}>
+                                    <button type={"button"} onClick={() => onClickBoard(index)}
+                                            className={`w-35 h-35 rounded-2xl flex items-center justify-center ${isWinningCell ? winningPlayer === "X" ? "bg-teal-400" : "bg-amber-400" : "bg-slate-800"}`}>
+                                        {board[index] ? (
+                                            <img
+                                                src={
+                                                    isWinningCell
+                                                        ? winningPlayer === "O"
+                                                            ? ShadowOIcon
+                                                            : ShadowXIcon
+                                                        : board[index] === "O"
+                                                            ? OIcon
+                                                            : XIcon
+                                                }
+                                                alt={board[index]}
+                                                className="w-16 h-16 shrink-0"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={currentPlayer === "O" ? OutlineOIcon : OutlineXIcon}
+                                                alt=""
+                                                className="w-16 h-16 shrink-0 opacity-0 group-hover:opacity-100"
+                                            />
+                                        )}
+                                    </button>
+                                </div>
+                            </Fragment>
+                        )
+                    }
+                )}
             </div>
 
             <div className={"flex gap-5 justify-between"}>

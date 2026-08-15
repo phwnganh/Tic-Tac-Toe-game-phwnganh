@@ -19,7 +19,7 @@ const LoseNotificationModal = ({loserTurn, isMultiplayer}) => {
                         <div className={"flex items-center justify-center w-16 h-16 shrink-0"}>
                             <img src={loserTurn === "O" ? OIcon : XIcon} alt={"o-icon"}/>
                         </div>
-                        <h2 className={"uppercase text-amber-400 text-preset-1 leading-preset-1 tracking-preset-1 font-preset-1"}>takes the round</h2>
+                        <h2 className={`uppercase ${loserTurn === "O" ? "text-amber-400" : "text-teal-400"} text-preset-1 leading-preset-1 tracking-preset-1 font-preset-1`}>takes the round</h2>
                     </div>
 
                     <div className={"flex gap-4 justify-center"}>

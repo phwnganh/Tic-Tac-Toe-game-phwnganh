@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 import WinNotificationModal from "./shared/WinNotificationModal.jsx";
 import LoseNotificationModal from "./shared/LoseNotificationModal.jsx";
+import RoundTieNotificationModal from "./shared/RoundTieNotificationModal.jsx";
 
 
 const GameSolo = () => {
@@ -11,13 +12,19 @@ const GameSolo = () => {
     const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
     const [isOpenWinNotificationModal, setIsOpenWinNotificationModal] = useState(false)
     const [isOpenLoseNotificationModal, setIsOpenLoseNotificationModal] = useState(false)
-
+    const [isOpenRoundTieNotificationModal, setIsOpenRoundTieNotificationModal] = useState(false)
+    const [winningLine, setWinningLine] = useState([])
+    const [winningPlayer, setWinningPlayer] = useState(null)
     const handleOpenWinNotificationModal = () => {
         setIsOpenWinNotificationModal(true)
     }
 
     const handleOpenLoseNotificationModal = () => {
-        setIsOpenLoseNotificationModal(false)
+        setIsOpenLoseNotificationModal(true)
+    }
+
+    const handleOpenRoundTieNotificationModal = () => {
+        setIsOpenRoundTieNotificationModal(true)
     }
     const player = state;
     const cpu = player === "X" ? "O" : "X"
@@ -32,6 +39,8 @@ const GameSolo = () => {
         }
         setBoard(Array(9).fill(null));
         setCurrentTurn(player);
+        setWinningLine([])
+        setWinningPlayer(null)
     }, [player]);
 
     useEffect(() => {
@@ -48,15 +57,18 @@ const GameSolo = () => {
         newBoard[index] = player;
         setBoard(newBoard);
 
-        const winner = checkWinner(newBoard)
+        const result = checkWinner(newBoard)
 
-        if(winner === player){
+        if(result?.winner === player){
+            setBoard(newBoard);
+            setWinningLine(result?.lines)
+            setWinningPlayer(result?.winner)
             handleOpenWinNotificationModal()
             return;
         }
 
         if(checkDrawLines(newBoard)){
-            console.log("DRAW");
+            handleOpenRoundTieNotificationModal()
             return;
         }
 
@@ -77,17 +89,19 @@ const GameSolo = () => {
 
             newBoard[randomIndex] = cpu;
 
-            const winnerCPU = checkWinner(newBoard)
+            const result = checkWinner(newBoard)
 
-            if(winnerCPU === cpu){
-                handleOpenLoseNotificationModal()
+            if(result?.winner === cpu){
                 setBoard(newBoard)
+                setWinningLine(result?.lines)
+                setWinningPlayer(result?.winner)
+                handleOpenLoseNotificationModal()
                 timeoutRef.current = null;
                 return;
             }
 
             if(checkDrawLines(newBoard)){
-                console.log("DRAW");
+                handleOpenRoundTieNotificationModal()
                 setBoard(newBoard)
                 timeoutRef.current = null;
                 return;
@@ -100,9 +114,10 @@ const GameSolo = () => {
     }
   return (
     <>
-        <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} />
+        <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winningPlayer}/>
         {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={currentTurn} isMultiplayer={false}/>}
         {isOpenLoseNotificationModal && <LoseNotificationModal/>}
+        {isOpenRoundTieNotificationModal && <RoundTieNotificationModal/>}
     </>
   );
 };

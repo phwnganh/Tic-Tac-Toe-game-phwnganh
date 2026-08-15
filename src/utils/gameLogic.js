@@ -12,9 +12,13 @@ const WINNING_LINES = [
 ]
 
 export const checkWinner = (board) => {
-    for (const [a, b, c] of WINNING_LINES){
+    for(const lines of WINNING_LINES){
+        const [a, b, c] = lines;
         if(board[a] && board[a] === board[b] && board[a] === board[c]){
-            return board[a]
+            return {
+                winner: board[a],
+                lines
+            }
         }
     }
     return null;

@@ -13,11 +13,13 @@ const GameMultiplayer = () => {
     const [board, setBoard] = useState(Array(9).fill(null))
     const [isOpenWinNotificationModal, setIsOpenWinNotificationModal] = useState(false)
     const [isOpenRoundTieNotificationModal, setIsOpenRoundTieNotificationModal] = useState(false)
+    const [winningLine, setWinningLine] = useState([])
     const [gameOver, setGameOver] = useState(false)
     const resetGame = useCallback(() => {
         setBoard(Array(9).fill(null));
         setCurrentTurn(state);
         setGameOver(false)
+        setWinningLine([])
     }, [state]);
 
     useEffect(() => {
@@ -40,10 +42,12 @@ const GameMultiplayer = () => {
         newBoard[index] = currentTurn
         setBoard(newBoard)
 
-        const winner = checkWinner(newBoard)
+        const result = checkWinner(newBoard)
 
-        if(winner){
-            setWinner(winner);
+        if(result?.winner){
+            setBoard(newBoard)
+            setWinner(result?.winner);
+            setWinningLine(result?.lines)
             handleOpenWinNotificationModal()
             setGameOver(true)
             return;
@@ -58,7 +62,7 @@ const GameMultiplayer = () => {
     }
     return (
         <>
-            <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard}/>
+            <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winner} />
             {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={winner} isMultiplayer={true}/>}
             {isOpenRoundTieNotificationModal && <RoundTieNotificationModal/>}
         </>
