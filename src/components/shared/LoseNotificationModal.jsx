@@ -10,7 +10,7 @@ const LoseNotificationModal = ({loserTurn, isMultiplayer}) => {
         }>
             <div
                 className={
-                    "flex justify-center items- flex-col h-67 w-full bg-slate-800"
+                    "flex justify-center items-center flex-col h-67 w-full bg-slate-800"
                 }
             >
                 <h1 className={"uppercase text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4 text-slate-300"}>Oh no, you lost ...</h1>
