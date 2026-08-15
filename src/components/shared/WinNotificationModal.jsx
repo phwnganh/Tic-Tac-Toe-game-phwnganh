@@ -1,7 +1,7 @@
 import XIcon from '../../../public/icon-x.svg'
 import OIcon from '../../../public/icon-o.svg'
 import {useNavigate} from "react-router-dom";
-const WinNotificationModal = ({winnerTurn, isMultiplayer}) => {
+const WinNotificationModal = ({winnerTurn, isMultiplayer, onNextRound}) => {
     const navigate = useNavigate()
     return (
         <div className={
@@ -36,6 +36,7 @@ const WinNotificationModal = ({winnerTurn, isMultiplayer}) => {
                             className={
                                 "rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
                             }
+                            onClick={onNextRound}
                         >
                             Next round
                         </button>

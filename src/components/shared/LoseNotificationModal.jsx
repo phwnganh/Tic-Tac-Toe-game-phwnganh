@@ -2,7 +2,7 @@ import OIcon from "../../../public/icon-o.svg";
 import XIcon from "../../../public/icon-x.svg";
 import {useNavigate} from "react-router-dom";
 
-const LoseNotificationModal = ({loserTurn, isMultiplayer}) => {
+const LoseNotificationModal = ({loserTurn, onNextRound}) => {
     const navigate = useNavigate();
     return (
         <div className={
@@ -37,6 +37,7 @@ const LoseNotificationModal = ({loserTurn, isMultiplayer}) => {
                             className={
                                 "rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
                             }
+                            onClick={onNextRound}
                         >
                             Next round
                         </button>

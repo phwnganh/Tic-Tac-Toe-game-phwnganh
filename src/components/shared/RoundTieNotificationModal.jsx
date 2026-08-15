@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-const RoundTieNotificationModal = () => {
+const RoundTieNotificationModal = ({onNextRound}) => {
     const navigate = useNavigate();
     return (
         <div className={
@@ -27,6 +27,7 @@ const RoundTieNotificationModal = () => {
                         className={
                             "rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
                         }
+                        onClick={onNextRound}
                     >
                         Next round
                     </button>

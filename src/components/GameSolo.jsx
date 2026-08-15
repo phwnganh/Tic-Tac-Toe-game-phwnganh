@@ -6,7 +6,6 @@ import WinNotificationModal from "./shared/WinNotificationModal.jsx";
 import LoseNotificationModal from "./shared/LoseNotificationModal.jsx";
 import RoundTieNotificationModal from "./shared/RoundTieNotificationModal.jsx";
 
-
 const GameSolo = () => {
     const {state} = useLocation()
     const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
@@ -30,6 +29,11 @@ const GameSolo = () => {
     const cpu = player === "X" ? "O" : "X"
     const [currentTurn, setCurrentTurn] = useState(player)
     const [board, setBoard] = useState(Array(9).fill(null));
+    const [scores, setScores] = useState({
+        player: 0,
+        ties: 0,
+        cpu: 0
+    })
     const timeoutRef = useRef(null);
 
     const resetGame = useCallback(() => {
@@ -43,10 +47,34 @@ const GameSolo = () => {
         setWinningPlayer(null)
     }, [player]);
 
+    const handleRestartGame = () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        }
+        setBoard(Array(9).fill(null));
+        setCurrentTurn(player);
+        setWinningLine([])
+        setWinningPlayer(null)
+        setScores({
+            player: 0,
+            ties: 0,
+            cpu: 0
+        })
+    }
+
+    const handleNextRound = () => {
+        resetGame();
+
+        setIsOpenWinNotificationModal(false)
+        setIsOpenLoseNotificationModal(false)
+        setIsOpenRoundTieNotificationModal(false)
+    }
+
     useEffect(() => {
-        registerResetHandler(resetGame);
+        registerResetHandler(handleRestartGame);
         return () => registerResetHandler(() => {});
-    }, [registerResetHandler, resetGame]);
+    }, [registerResetHandler, handleRestartGame]);
 
     const handleClickBoard = (index) => {
         if(board[index] !== null) return;
@@ -63,11 +91,19 @@ const GameSolo = () => {
             setBoard(newBoard);
             setWinningLine(result?.lines)
             setWinningPlayer(result?.winner)
+            setScores(prev => ({
+                ...prev,
+                player: prev.player + 1,
+            }))
             handleOpenWinNotificationModal()
             return;
         }
 
         if(checkDrawLines(newBoard)){
+            setScores(prev => ({
+                ...prev,
+                ties: prev.ties + 1,
+            }))
             handleOpenRoundTieNotificationModal()
             return;
         }
@@ -95,12 +131,20 @@ const GameSolo = () => {
                 setBoard(newBoard)
                 setWinningLine(result?.lines)
                 setWinningPlayer(result?.winner)
+                setScores(prev => ({
+                    ...prev,
+                    cpu: prev.cpu + 1
+                }))
                 handleOpenLoseNotificationModal()
                 timeoutRef.current = null;
                 return;
             }
 
             if(checkDrawLines(newBoard)){
+                setScores(prev => ({
+                    ...prev,
+                    ties: prev.ties + 1,
+                }))
                 handleOpenRoundTieNotificationModal()
                 setBoard(newBoard)
                 timeoutRef.current = null;
@@ -114,10 +158,10 @@ const GameSolo = () => {
     }
   return (
     <>
-        <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winningPlayer}/>
-        {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={currentTurn} isMultiplayer={false}/>}
-        {isOpenLoseNotificationModal && <LoseNotificationModal/>}
-        {isOpenRoundTieNotificationModal && <RoundTieNotificationModal/>}
+        <GameStart isMultiplayer={false} onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winningPlayer} scores={scores}/>
+        {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={currentTurn} isMultiplayer={false} onNextRound={handleNextRound}/>}
+        {isOpenLoseNotificationModal && <LoseNotificationModal onNextRound={handleNextRound}/>}
+        {isOpenRoundTieNotificationModal && <RoundTieNotificationModal onNextRound={handleNextRound}/>}
     </>
   );
 };

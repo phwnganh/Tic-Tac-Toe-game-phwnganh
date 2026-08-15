@@ -8,7 +8,7 @@ import OutlineOIcon from '../../../public/icon-o-outline.svg'
 import OutlineXIcon from '../../../public/icon-x-outline.svg'
 import ReturnICon from "../../../public/icon-restart.svg";
 import {Fragment} from "react";
-const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard, winningLine = [], winningPlayer}) => {
+const GameStart = ({isMultiplayer, onOpenResetConfirmModal, currentPlayer, board, onClickBoard, winningLine = [], winningPlayer, scores}) => {
     const isCurrentTurn = currentPlayer === "O"
     return (
         <div className={"flex flex-col gap-5 max-w-115 w-full"}>
@@ -89,19 +89,19 @@ const GameStart = ({onOpenResetConfirmModal, currentPlayer, board, onClickBoard,
             </div>
 
             <div className={"flex gap-5 justify-between"}>
-                <div className={"max-w-35 w-full rounded-2xl bg-teal-400 py-3 flex flex-col justify-center items-center"}>
-                    <p className={"uppercase text-slate-900 text-preset-5 leading-preset-5 tracking-preset-5 font-preset-5-medium"}>X (You)</p>
-                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>0</span>
+                <div className={`max-w-35 w-full rounded-2xl bg-teal-400 py-3 flex flex-col justify-center items-center`}>
+                    <p className={"uppercase text-slate-900 text-preset-5 leading-preset-5 tracking-preset-5 font-preset-5-medium"}>{isMultiplayer ? "X (P2)" : isCurrentTurn ? "O (You)" : "X (You)"}</p>
+                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>{isMultiplayer ? scores.x : scores.player}</span>
                 </div>
 
                 <div className={"max-w-35 w-full rounded-2xl bg-slate-300 py-3 flex flex-col justify-center items-center"}>
                     <p className={"uppercase text-slate-900 text-preset-5 leading-preset-5 tracking-preset-5 font-preset-5-medium"}>Ties</p>
-                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>0</span>
+                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>{scores.ties}</span>
                 </div>
 
-                <div className={"max-w-35 w-full rounded-2xl bg-amber-400 py-3 flex flex-col justify-center items-center"}>
-                    <p className={"uppercase text-slate-900 text-preset-5 leading-preset-5 tracking-preset-5 font-preset-5-medium"}>X (CPU)</p>
-                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>0</span>
+                <div className={`max-w-35 w-full rounded-2xl bg-amber-400 py-3 flex flex-col justify-center items-center`}>
+                    <p className={"uppercase text-slate-900 text-preset-5 leading-preset-5 tracking-preset-5 font-preset-5-medium"}>{isMultiplayer ? "O (P1)" : !isCurrentTurn ? "O (CPU)" : "X (CPU)"}</p>
+                    <span className={"text-slate-900 text-preset-2 leading-preset-2 tracking-preset-2 font-preset-2"}>{isMultiplayer ? scores.o : scores.cpu}</span>
                 </div>
             </div>
         </div>

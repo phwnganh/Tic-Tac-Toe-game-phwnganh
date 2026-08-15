@@ -11,6 +11,12 @@ const GameMultiplayer = () => {
     const [currentTurn, setCurrentTurn] = useState(state)
     const [winner, setWinner] = useState(null);
     const [board, setBoard] = useState(Array(9).fill(null))
+    const [scores, setScores] = useState({
+        x: 0,
+        ties: 0,
+        o: 0,
+    })
+
     const [isOpenWinNotificationModal, setIsOpenWinNotificationModal] = useState(false)
     const [isOpenRoundTieNotificationModal, setIsOpenRoundTieNotificationModal] = useState(false)
     const [winningLine, setWinningLine] = useState([])
@@ -22,10 +28,28 @@ const GameMultiplayer = () => {
         setWinningLine([])
     }, [state]);
 
+    const handleRestartGame = () => {
+        setBoard(Array(9).fill(null));
+        setCurrentTurn(state);
+        setGameOver(false)
+        setWinningLine([])
+        setScores({
+            o: 0,
+            ties: 0,
+            x: 0
+        })
+    }
+
+    const handleNextRound = () => {
+        resetGame()
+        setIsOpenWinNotificationModal(false)
+        setIsOpenRoundTieNotificationModal(false)
+    }
+
     useEffect(() => {
-        registerResetHandler(resetGame);
+        registerResetHandler(handleRestartGame);
         return () => registerResetHandler(() => {});
-    }, [registerResetHandler, resetGame]);
+    }, [registerResetHandler, handleRestartGame]);
 
     const handleOpenWinNotificationModal = () => {
         setIsOpenWinNotificationModal(true)
@@ -48,12 +72,27 @@ const GameMultiplayer = () => {
             setBoard(newBoard)
             setWinner(result?.winner);
             setWinningLine(result?.lines)
+            if(result.winner === "X"){
+                setScores(prev => ({
+                    ...prev,
+                    x: prev.x + 1,
+                }));
+            } else {
+                setScores(prev => ({
+                    ...prev,
+                    o: prev.o + 1,
+                }));
+            }
             handleOpenWinNotificationModal()
             setGameOver(true)
             return;
         }
 
         if(checkDrawLines(newBoard)){
+            setScores(prev => ({
+                ...prev,
+                ties: prev.ties + 1,
+            }));
             handleOpenRoundTieNotificationModal()
             setGameOver(true)
             return;
@@ -62,9 +101,9 @@ const GameMultiplayer = () => {
     }
     return (
         <>
-            <GameStart onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winner} />
-            {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={winner} isMultiplayer={true}/>}
-            {isOpenRoundTieNotificationModal && <RoundTieNotificationModal/>}
+            <GameStart isMultiplayer={true} scores={scores} onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winner} />
+            {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={winner} isMultiplayer={true} onNextRound={handleNextRound}/>}
+            {isOpenRoundTieNotificationModal && <RoundTieNotificationModal onNextRound={handleNextRound}/>}
         </>
     );
 };
