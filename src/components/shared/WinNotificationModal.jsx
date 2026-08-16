@@ -1,12 +1,23 @@
 import XIcon from "../../../public/icon-x.svg";
 import OIcon from "../../../public/icon-o.svg";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 const WinNotificationModal = ({ winnerTurn, isMultiplayer, onNextRound }) => {
   const navigate = useNavigate();
+  const nextRoundButtonRef = useRef(null);
+  const headingRef = useRef(null);
+  useEffect(() => {
+    nextRoundButtonRef.current?.focus();
+  }, []);
 
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
   return (
     <div
+      aria-live="assertive"
+      aria-atomic="true"
       className={
         "bg-neutral-950/50 flex justify-center items-center fixed inset-0 z-50"
       }
@@ -19,7 +30,9 @@ const WinNotificationModal = ({ winnerTurn, isMultiplayer, onNextRound }) => {
           "flex justify-center items-center flex-col h-67 w-full bg-slate-800"
         }
       >
-        <h1
+        <h2
+          ref={headingRef}
+          tabIndex="-1"
           id="win-modal-heading"
           className={
             "uppercase text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4 text-slate-300"
@@ -30,22 +43,19 @@ const WinNotificationModal = ({ winnerTurn, isMultiplayer, onNextRound }) => {
               ? "Player 1 wins!"
               : "Player 2 wins!"
             : "You won!"}
-        </h1>
+        </h2>
         <div className={"mt-4 flex flex-col gap-6"}>
           <div className={"flex items-center gap-6"}>
             <div
               className={"flex items-center justify-center w-16 h-16 shrink-0"}
             >
-              <img
-                src={winnerTurn === "X" ? XIcon : OIcon}
-                alt={winnerTurn === "X" ? "x-icon" : "o-icon"}
-              />
+              <img src={winnerTurn === "X" ? XIcon : OIcon} alt={""} />
             </div>
-            <h2
+            <h3
               className={`uppercase ${winnerTurn === "X" ? "text-teal-400" : "text-amber-400"} text-preset-1 leading-preset-1 tracking-preset-1 font-preset-1`}
             >
               takes the round
-            </h2>
+            </h3>
           </div>
 
           <div className={"flex gap-4 justify-center"}>
@@ -59,6 +69,7 @@ const WinNotificationModal = ({ winnerTurn, isMultiplayer, onNextRound }) => {
               Quit
             </button>
             <button
+              ref={nextRoundButtonRef}
               type={"button"}
               className={
                 "shadow-[0_-8px_0_0_#10212A80,inset_0_-4px_0_0_#CC8B13] rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"

@@ -2,9 +2,19 @@ import { useNavigate } from "react-router-dom";
 
 const RoundTieNotificationModal = ({ onNextRound }) => {
   const navigate = useNavigate();
+  const nextRoundButtonRef = useRef(null);
+  const headingRef = useRef(null);
+  useEffect(() => {
+    nextRoundButtonRef.current?.focus();
+  }, []);
 
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
   return (
     <div
+      aria-live="assertive"
+      aria-atomic="true"
       className={
         "bg-neutral-950/50 flex justify-center items-center fixed inset-0 z-50"
       }
@@ -17,14 +27,16 @@ const RoundTieNotificationModal = ({ onNextRound }) => {
           "flex justify-center items-center gap-7.5 flex-col h-67 w-full bg-slate-800"
         }
       >
-        <h1
+        <h2
+          ref={headingRef}
+          tabIndex="-1"
           id="tie-modal-heading"
           className={
             "uppercase text-preset-1 leading-preset-1 tracking-preset-1 font-preset-1 text-slate-300"
           }
         >
           Round tied
-        </h1>
+        </h2>
         <div className={"flex gap-4 justify-center"}>
           <button
             type={"button"}
@@ -36,6 +48,7 @@ const RoundTieNotificationModal = ({ onNextRound }) => {
             Quit
           </button>
           <button
+            ref={nextRoundButtonRef}
             type={"button"}
             className={
               "shadow-[0_-8px_0_0_#10212A80,inset_0_-4px_0_0_#CC8B13] rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"

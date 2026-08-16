@@ -26,12 +26,12 @@ const GameStart = ({
           <div
             className={"flex justify-center items-center w-7.5 h-7.5 shrink-0"}
           >
-            <img src={XIcon} alt="XIcon" />
+            <img src={XIcon} alt="" />
           </div>
           <div
             className={"flex justify-center items-center w-7.5 h-7.5 shrink-0"}
           >
-            <img src={OIcon} alt="OIcon" />
+            <img src={OIcon} alt="" />
           </div>
         </div>
 
@@ -59,7 +59,7 @@ const GameStart = ({
           <div className={"flex justify-center items-center w-5 h-5 shrink-0"}>
             <img
               src={isCurrentTurn ? GreyOIcon : GreyXICon}
-              alt={isCurrentTurn ? "GreyOIcon" : "GreyXICon"}
+              alt={""}
             />
           </div>
           <span
@@ -73,13 +73,14 @@ const GameStart = ({
 
         <button
           type={"button"}
+          aria-label="Restart game"
           onClick={onOpenResetConfirmModal}
           className={
             "shadow-[inset_0_-4px_0_0_#6B8997] bg-slate-300 p-4 rounded-xl"
           }
         >
-          <div aria-label="Restart game" className={"flex items-center justify-center w-5 h-5 shrink-0"}>
-            <img src={ReturnICon} alt="ReturnICon" />
+          <div className={"flex items-center justify-center w-5 h-5 shrink-0"}>
+            <img src={ReturnICon} alt="" />
           </div>
         </button>
       </div>
@@ -113,7 +114,7 @@ const GameStart = ({
                             ? OIcon
                             : XIcon
                       }
-                      alt={board[index]}
+                      alt={""}
                       className="w-16 h-16 shrink-0"
                     />
                   ) : (
