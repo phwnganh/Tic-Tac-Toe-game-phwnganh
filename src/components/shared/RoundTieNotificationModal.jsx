@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { useDialogFocus } from "../../hooks/useDialogFocus";
 
 const RoundTieNotificationModal = ({ onNextRound }) => {
   const navigate = useNavigate();
