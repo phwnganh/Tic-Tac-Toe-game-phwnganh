@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 const ResetConfirmModal = ({ onCloseResetConfirmModal, onConfirmReset }) => {
   const headingRef = useRef(null);
   useEffect(() => {
