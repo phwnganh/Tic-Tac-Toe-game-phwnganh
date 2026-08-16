@@ -1,14 +1,23 @@
 import GameStart from "./shared/GameStart.jsx";
-import {useLocation, useOutletContext} from "react-router-dom";
+import {useLocation, useNavigate, useOutletContext} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 import WinNotificationModal from "./shared/WinNotificationModal.jsx";
 import RoundTieNotificationModal from "./shared/RoundTieNotificationModal.jsx";
 
 const GameMultiplayer = () => {
-    const {state} = useLocation()
+    const {state} = useLocation();
+    const navigate = useNavigate();
     const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
-    const [currentTurn, setCurrentTurn] = useState(state)
+    const validPlayer = state === "X" || state === "O" ? state : "O";
+
+    useEffect(() => {
+        if (state !== "X" && state !== "O") {
+            navigate("/", { replace: true });
+        }
+    }, [state, navigate]);
+
+    const [currentTurn, setCurrentTurn] = useState(validPlayer)
     const [winner, setWinner] = useState(null);
     const [board, setBoard] = useState(Array(9).fill(null))
     const [scores, setScores] = useState({
@@ -23,14 +32,14 @@ const GameMultiplayer = () => {
     const [gameOver, setGameOver] = useState(false)
     const resetGame = useCallback(() => {
         setBoard(Array(9).fill(null));
-        setCurrentTurn(state);
+        setCurrentTurn(validPlayer);
         setGameOver(false)
         setWinningLine([])
-    }, [state]);
+    }, [validPlayer]);
 
     const handleRestartGame = useCallback(() => {
         setBoard(Array(9).fill(null));
-        setCurrentTurn(state);
+        setCurrentTurn(validPlayer);
         setGameOver(false)
         setWinningLine([])
         setScores({
@@ -38,7 +47,7 @@ const GameMultiplayer = () => {
             ties: 0,
             x: 0
         })
-    }, [state])
+    }, [validPlayer])
 
     const handleNextRound = () => {
         resetGame()

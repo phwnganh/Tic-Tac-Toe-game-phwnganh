@@ -26,7 +26,7 @@ const LoseNotificationModal = ({loserTurn, onNextRound}) => {
                         <button
                             type={"button"}
                             className={
-                                "rounded-xl bg-slate-300 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
+                                "shadow-[inset_0_-4px_0_0_#6B8997] rounded-xl bg-slate-300 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
                             }
                             onClick={() => navigate("/")}
                         >
@@ -35,7 +35,7 @@ const LoseNotificationModal = ({loserTurn, onNextRound}) => {
                         <button
                             type={"button"}
                             className={
-                                "rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
+                                "shadow-[0_-8px_0_0_#10212A80,inset_0_-4px_0_0_#CC8B13] rounded-xl bg-amber-400 p-4 uppercase text-slate-900 text-preset-4 leading-preset-4 tracking-preset-4 font-preset-4"
                             }
                             onClick={onNextRound}
                         >

@@ -1,5 +1,5 @@
 import GameStart from "./shared/GameStart.jsx";
-import {useLocation, useOutletContext} from "react-router-dom";
+import {useLocation, useNavigate, useOutletContext} from "react-router-dom";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {checkDrawLines, checkWinner} from "../utils/gameLogic.js";
 import WinNotificationModal from "./shared/WinNotificationModal.jsx";
@@ -7,8 +7,17 @@ import LoseNotificationModal from "./shared/LoseNotificationModal.jsx";
 import RoundTieNotificationModal from "./shared/RoundTieNotificationModal.jsx";
 
 const GameSolo = () => {
-    const {state} = useLocation()
+    const {state} = useLocation();
+    const navigate = useNavigate();
     const { onOpenResetConfirmModal, registerResetHandler } = useOutletContext();
+    const validPlayer = state === "X" || state === "O" ? state : "O";
+
+    useEffect(() => {
+        if (state !== "X" && state !== "O") {
+            navigate("/", { replace: true });
+        }
+    }, [state, navigate]);
+
     const [isOpenWinNotificationModal, setIsOpenWinNotificationModal] = useState(false)
     const [isOpenLoseNotificationModal, setIsOpenLoseNotificationModal] = useState(false)
     const [isOpenRoundTieNotificationModal, setIsOpenRoundTieNotificationModal] = useState(false)
@@ -25,7 +34,7 @@ const GameSolo = () => {
     const handleOpenRoundTieNotificationModal = () => {
         setIsOpenRoundTieNotificationModal(true)
     }
-    const player = state;
+    const player = validPlayer;
     const cpu = player === "X" ? "O" : "X"
     const [currentTurn, setCurrentTurn] = useState(player)
     const [board, setBoard] = useState(Array(9).fill(null));
@@ -160,7 +169,7 @@ const GameSolo = () => {
     <>
         <GameStart isMultiplayer={false} onOpenResetConfirmModal={onOpenResetConfirmModal} currentPlayer={currentTurn} board={board} onClickBoard={handleClickBoard} winningLine={winningLine} winningPlayer={winningPlayer} scores={scores}/>
         {isOpenWinNotificationModal && <WinNotificationModal winnerTurn={currentTurn} isMultiplayer={false} onNextRound={handleNextRound}/>}
-        {isOpenLoseNotificationModal && <LoseNotificationModal onNextRound={handleNextRound}/>}
+        {isOpenLoseNotificationModal && <LoseNotificationModal loserTurn={currentTurn} onNextRound={handleNextRound}/>}
         {isOpenRoundTieNotificationModal && <RoundTieNotificationModal onNextRound={handleNextRound}/>}
     </>
   );

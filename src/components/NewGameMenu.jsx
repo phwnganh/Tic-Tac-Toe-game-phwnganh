@@ -44,18 +44,18 @@ const NewGameMenu = () => {
       <div className={"flex flex-col gap-4 sm:gap-5"}>
         <button
           type={"button"}
-          onClick={() => navigate(`/new-game/solo`, {state: player})}
+          onClick={() => navigate(`/new-game/solo`, { state: player })}
           className={
-            "uppercase shadow-[0_-8px_0_0_#1012A80] py-4 rounded-2xl bg-amber-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
+            "uppercase shadow-[0_-8px_0_0_#10212A80,inset_0_-8px_0_0_#CC8B13] hover:bg-amber-300 py-4 rounded-2xl bg-amber-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
           }
         >
           New Game (vs CPU)
         </button>
         <button
           type={"button"}
-          onClick={() => navigate("/new-game/multiplayer", {state: player})}
+          onClick={() => navigate("/new-game/multiplayer", { state: player })}
           className={
-            "uppercase shadow-[0_-8px_0_0_#1012A80] py-4 rounded-2xl bg-teal-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
+            "uppercase shadow-[0_-8px_0_0_#10212A80,inset_0_-8px_0_0_#118C87] py-4 rounded-2xl hover:bg-teal-300 bg-teal-400 text-slate-900 text-preset-3 leading-preset-3 tracking-preset-3 font-preset-3"
           }
         >
           New Game (vs player)
