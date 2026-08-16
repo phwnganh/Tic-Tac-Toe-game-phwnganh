@@ -1,24 +1,35 @@
-
 const ResetConfirmModal = ({ onCloseResetConfirmModal, onConfirmReset }) => {
+  const headingRef = useRef(null);
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
   return (
     <div
+      aria-live="assertive"
+      aria-atomic="true"
       className={
         "bg-neutral-950/50 flex justify-center items-center fixed inset-0 z-50"
       }
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reset-modal-heading"
         className={
           "flex justify-center items-center gap-7.5 h-67 w-full bg-slate-800"
         }
       >
         <div className="flex flex-col gap-7.5">
-          <h1
+          <h2
+            ref={headingRef}
+            tabIndex="-1"
+            id="reset-modal-heading"
             className={
               "uppercase text-slate-300 text-preset-1 leading-preset-1 tracking-preset-1 font-preset-1"
             }
           >
             Restart game?
-          </h1>
+          </h2>
           <div className={"flex gap-4"}>
             <button
               type={"button"}
