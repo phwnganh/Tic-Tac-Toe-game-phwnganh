@@ -35,8 +35,23 @@ const GameStart = ({
           </div>
         </div>
 
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          {isMultiplayer
+            ? `Player ${currentPlayer}'s turn`
+            : currentPlayer === "O"
+              ? "Your turn, O"
+              : "Your turn, X"}
+        </div>
+
         <button
           type={"button"}
+          aria-label={
+            isMultiplayer
+              ? `Player ${currentPlayer}'s turn`
+              : currentPlayer === "O"
+                ? "Your turn, O"
+                : "Your turn, X"
+          }
           className={
             "shadow-[inset_0_-4px_0_0_#10212A] uppercase max-w-35 w-full flex-1 py-2.5 sm:py-4 rounded-md sm:rounded-xl bg-slate-800 flex items-center justify-center gap-3"
           }
@@ -59,9 +74,11 @@ const GameStart = ({
         <button
           type={"button"}
           onClick={onOpenResetConfirmModal}
-          className={"shadow-[inset_0_-4px_0_0_#6B8997] bg-slate-300 p-4 rounded-xl"}
+          className={
+            "shadow-[inset_0_-4px_0_0_#6B8997] bg-slate-300 p-4 rounded-xl"
+          }
         >
-          <div className={"flex items-center justify-center w-5 h-5 shrink-0"}>
+          <div aria-label="Restart game" className={"flex items-center justify-center w-5 h-5 shrink-0"}>
             <img src={ReturnICon} alt="ReturnICon" />
           </div>
         </button>
@@ -70,13 +87,20 @@ const GameStart = ({
       <div className={"grid grid-cols-3 gap-5"}>
         {Array.from({ length: 9 }, (_, index) => {
           const isWinningCell = winningLine.includes(index);
+          const isOccupied = Boolean(board[index]);
+          const cellLabel = isOccupied
+            ? `Cell ${index + 1}, ${board[index]}`
+            : `Cell ${index + 1}, empty`;
+
           return (
             <Fragment key={index}>
               <div className={"relative group w-full"}>
                 <button
                   type={"button"}
                   onClick={() => onClickBoard(index)}
-                  className={`shadow-[0_-8px_0_0_#10212A80,inset_0_-8px_0_0_#10212A] w-full aspect-square rounded-2xl flex items-center justify-center ${isWinningCell ? (winningPlayer === "X" ? "bg-teal-400" : "bg-amber-400") : "bg-slate-800"}`}
+                  disabled={isOccupied}
+                  aria-label={cellLabel}
+                  className={`shadow-[0_-8px_0_0_#10212A80,inset_0_-8px_0_0_#10212A] w-full aspect-square rounded-2xl flex items-center justify-center ${isWinningCell ? (winningPlayer === "X" ? "bg-teal-400" : "bg-amber-400") : "bg-slate-800"} ${isOccupied ? "cursor-default opacity-100" : "cursor-pointer"}`}
                 >
                   {board[index] ? (
                     <img
@@ -108,6 +132,9 @@ const GameStart = ({
 
       <div className={"flex gap-5 justify-between"}>
         <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           className={`max-w-35 w-full rounded-2xl bg-teal-400 py-3 flex flex-col justify-center items-center`}
         >
           <p
@@ -127,6 +154,9 @@ const GameStart = ({
         </div>
 
         <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           className={
             "max-w-35 w-full rounded-2xl bg-slate-300 py-3 flex flex-col justify-center items-center"
           }
@@ -148,6 +178,9 @@ const GameStart = ({
         </div>
 
         <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           className={`max-w-35 w-full rounded-2xl bg-amber-400 py-3 flex flex-col justify-center items-center`}
         >
           <p

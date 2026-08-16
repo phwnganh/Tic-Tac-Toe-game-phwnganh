@@ -32,7 +32,7 @@ const MainLayout = () => {
   );
 
   return (
-    <div className={"bg-slate-900 relative"}>
+    <main className={"bg-slate-900 relative"}>
       <div
         className={
           "max-w-360 w-full mx-auto grid place-items-center min-h-screen"
@@ -52,7 +52,7 @@ const MainLayout = () => {
           onConfirmReset={handleResetGame}
         />
       )}
-    </div>
+    </main>
   );
 };
 
